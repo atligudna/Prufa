@@ -111,108 +111,43 @@
   <!-- JavaScript (MathJax virkar því það er hlaðið á undan) -->
   <script>
         // Spurningagrunnurinn
-        const questions = [
-            {
-                question: "Hvað mælir öryggisbil fyrst og fremst?",
-                options: [
-                    "Stærð úrtaksins",
-                    "Óvissuna í mati okkar á þýðisbreytu",
-                    "Nákvæmlega gildi þýðisbreytunnar",
-                    "Fjölda mælinga í þýðinu"
-                ],
-                answer: 1 // Réttháa svarið er á index 1
-            },
-            {
-                question: "Hvað þýðir 95% öryggisbil?",
-                options: [
-                    "Að 95% af gögnunum í úrtakinu séu á bilinu",
-                    "Að 95% líkur séu á að meðaltal úrtaksins sé rétt",
-                    "Að ef við endurtökum tilraunina oft, myndu 95% bilanna innihalda sanna gildið",
-                    "Að það séu 5% líkur á villu í útreikningum"
-                ],
-                answer: 2
-            },
-            {
-                question: "Hvaða áhrif hefur það á breidd öryggisbils ef við stækkum úrtakið (n) en höldum öllu öðru óbreyttu?",
-                options: [
-                    "Bilið verður breiðara (meiri óvissa)",
-                    "Bilið verður mjórra (meiri nákvæmni)",
-                    "Breiddin breytist ekki",
-                    "Það fer eftir staðalfráviki"
-                ],
-                answer: 1
-            },
-            {
-                question: "Hvaða áhrif hefur það á breidd öryggisbils ef við hækkum öryggisstigið (t.d. úr 90% í 99%)?",
-                options: [
-                    "Bilið verður breiðara",
-                    "Bilið verður mjórra",
-                    "Breiddin breytist ekki",
-                    "Það er ómögulegt að segja"
-                ],
-                answer: 0
-            },
-            {
-                question: "Hvert er algengasta Z-gildið sem notað er til að reikna 95% öryggisbil?",
-                options: [
-                    "1.00",
-                    "1.65",
-                    "1.96",
-                    "2.58"
-                ],
-                answer: 2
-            },
-            {
-                question: "Hvað kallast stærðin $Z \\cdot (\\frac{s}{\\sqrt{n}})$ í formúlunni?",
-                options: [
-                    "Staðalskekkja (Standard Error)",
-                    "Vikmörk (Margin of Error)",
-                    "Meðaltal",
-                    "Staðalfrávik"
-                ],
-                answer: 1
-            },
-            {
-                question: "Gefið er: $n=100$, $\mu=50$, $s=5$. Hver er staðalskekkjan ($SE = \\frac{s}{\\sqrt{n}}$)?",
-                options: [
-                    "0.05",
-                    "0.5",
-                    "5.0",
-                    "50.0"
-                ],
-                answer: 1
-            },
-            {
-                question: "Með sömu gögnum ($n=100$, $\mu=50$, $s=5$), hver eru vikmörkin ($ME$) fyrir 95% öryggisbil? (Notaðu Z=1.96)",
-                options: [
-                    "0.98 (því 1.96 * 0.5)",
-                    "9.8 (því 1.96 * 5)",
-                    "1.96 (því 1.96 * 1)",
-                    "0.196 (því 1.96 / 10)"
-                ],
-                answer: 0
-            },
-            {
-                question: "Hvert er þá 95% öryggisbilið fyrir gögnin úr síðustu tveimur spurningum? ($\\bar{x}=50$, $ME=0.98$)",
-                options: [
-                    "[48.04, 51.96]",
-                    "[49.02, 50.98]",
-                    "[40.2, 59.8]",
-                    "[50, 50.98]"
-                ],
-                answer: 1
-            },
-            {
-                question: "Ef 95% öryggisbil fyrir hlutfall kjósenda sem styðja flokk X er [0.52, 0.58], hver er rétta túlkunin?",
-                options: [
-                    "Nákvæmlega 55% styðja flokkinn",
-                    "Flokkurinn mun fá á bilinu 52% til 58% atkvæða í kosningunum",
-                    "Við erum 95% viss um að raunverulegt hlutfall allra kjósenda sem styðja flokkinn sé á bilinu 52% til 58%",
-                    "Það eru 95% líkur að meðaltal úrtaksins sé á bilinu 52% til 58%"
-                ],
-                answer: 2
-            }
-        ];
+      // --- 1. Allar spurningar með difficulty ---
+const allQuestions = [
+  // Auðveldar spurningar
+  { question: "Hvað mælir öryggisbil fyrst og fremst?", options: ["Stærð úrtaksins", "Óvissu", "Gildi þýðis", "Fjölda mælinga"], answer: 1, difficulty: "auðvelt" },
+  { question: "Hvað þýðir 95% öryggisbil?", options: ["95% líkur á réttu meðaltali", "95% bil inniheldur sanna gildið", "5% líkur á villu", "95% af gögnum innan bils"], answer: 1, difficulty: "auðvelt" },
+  { question: "Z-gildi fyrir 95% öryggisbil er...", options: ["1.00", "1.65", "1.96", "2.58"], answer: 2, difficulty: "auðvelt" },
+  { question: "Ef úrtakið stækkar, hvað gerist við breidd bilsins?", options: ["Breiðara", "Mjórra", "Óbreytt", "Fer eftir staðalfráviki"], answer: 1, difficulty: "auðvelt" },
+  // Miðlungs
+  { question: "Gefið er $n=100$, $s=10$. Hver er staðalvillan $SE=\\frac{s}{\\sqrt{n}}$?", options: ["1", "10", "0.1", "100"], answer: 0, difficulty: "miðlungs" },
+  { question: "Hvað kallast stærðin $Z\\cdot(\\frac{s}{\\sqrt{n}})$?", options: ["Staðalvilla", "Vikmörk", "Meðaltal", "Staðalfrávik"], answer: 1, difficulty: "miðlungs" },
+  { question: "Hvað gerist ef við hækka öryggisstig úr 90% í 99%?", options: ["Bil breikkar", "Bil mjókkar", "Engin breyting", "Fer eftir úrtaki"], answer: 0, difficulty: "miðlungs" },
+  { question: "Ef $\bar{x}=50$ og $ME=1.96$, hver er efra mörk bilsins?", options: ["48.04", "51.96", "49.02", "50.98"], answer: 1, difficulty: "miðlungs" },
+  // Erfiðar
+  { question: "Hvaða forsendur þarf til að nota Z-próf?", options: ["Normaldreifing og þekkt σ", "Stórt úrtak", "Óháðar mælingar", "Allt ofangreint"], answer: 3, difficulty: "erfitt" },
+  { question: "Hvað táknar stærðin $s/\\sqrt{n}$?", options: ["Vikmörk", "Staðalfrávik", "Staðalvilla", "Z-gildi"], answer: 2, difficulty: "erfitt" },
+  { question: "Ef $s$ eykst en $n$ helst óbreytt, hvað gerist við öryggisbil?", options: ["Breiðara", "Mjórra", "Óbreytt", "Fer eftir Z"], answer: 0, difficulty: "erfitt" },
+  { question: "Hver er 95% öryggisbilið ef $\bar{x}=100$, $s=20$, $n=25$?", options: ["[92.16, 107.84]", "[96.08, 103.92]", "[80,120]", "[98,102]"], answer: 0, difficulty: "erfitt" },
+  // Mjög erfiðar
+  { question: "Ef þýðisstaðalfrávik er óþekkt og úrtak lítið, notum við...", options: ["Z-próf", "t-próf", "χ²-próf", "Engin þeirra"], answer: 1, difficulty: "mjög erfitt" },
+  { question: "Ef við tvöföldum úrtaksstærð, hvernig breytist staðalvillan?", options: ["Helmingast", "Tvöfaldast", "Margfaldast með √2", "Engin áhrif"], answer: 0, difficulty: "mjög erfitt" },
+  { question: "Ef öryggisstig hækkar, hvað gerist við Z-gildi?", options: ["Lækkar", "Hækkar", "Óbreytt", "Fer eftir s"], answer: 1, difficulty: "mjög erfitt" },
+  { question: "Hvaða áhrif hefur minni dreifni á öryggisbil?", options: ["Bil breikkar", "Bil mjókkar", "Engin áhrif", "Bil hverfur"], answer: 1, difficulty: "mjög erfitt" }
+];
+
+// --- 2. Hjálparfall til að velja n random úr fylki ---
+function pickRandom(arr, n) {
+  return arr.sort(() => 0.5 - Math.random()).slice(0, n);
+}
+
+// --- 3. Veljum 3 spurningar úr hverjum flokki ---
+const questions = [
+  ...pickRandom(allQuestions.filter(q => q.difficulty === "auðvelt"), 3),
+  ...pickRandom(allQuestions.filter(q => q.difficulty === "miðlungs"), 3),
+  ...pickRandom(allQuestions.filter(q => q.difficulty === "erfitt"), 3),
+  ...pickRandom(allQuestions.filter(q => q.difficulty === "mjög erfitt"), 3),
+];
+
 
         const quizContainer = document.getElementById('quiz-container');
         const checkBtn = document.getElementById('check-answers-btn');
