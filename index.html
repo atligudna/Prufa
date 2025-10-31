@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Líkindareikningur - Verkefni</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chapter-btn.active {
+            background-color: #1d4ed8; /* blue-800 */
+            color: white;
+        }
+        .question-container {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-blue-700">Líkindareikningur</h1>
+            <p class="text-slate-600 mt-2 text-lg">Æfingarverkefni í Stær3tl05</p>
+        </header>
+
+        <!-- Chapter Navigation -->
+        <nav class="flex flex-wrap justify-center gap-2 mb-8">
+            <button id="btn-chapter-1" class="chapter-btn active text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors duration-300" onclick="showChapter(1)">Kafli 1</button>
+            <button id="btn-chapter-2" class="chapter-btn bg-white hover:bg-slate-200 text-slate-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center border border-slate-300 transition-colors duration-300" onclick="showChapter(2)">Kafli 2</button>
+            <button id="btn-chapter-3" class="chapter-btn bg-white hover:bg-slate-200 text-slate-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center border border-slate-300 transition-colors duration-300" onclick="showChapter(3)">Kafli 3</button>
+            <button id="btn-chapter-4" class="chapter-btn bg-white hover:bg-slate-200 text-slate-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center border border-slate-300 transition-colors duration-300" onclick="showChapter(4)">Kafli 4</button>
+        </nav>
+
+        <main id="main-content">
+            <!-- Content will be dynamically inserted here -->
+        </main>
+
+    </div>
+
+    <script>
+        const quizData = {
+            1: {
+                title: "Líkindi grunnur.",
+                explanation: "Líkur mæla hversu sennilegur atburður er. Líkur á atburði A, táknað með  P(A) er reiknað sem hlutfallið milli fjölda hagstæðra útkomna og heildarfjölda mögulegra útkoma.",
+                example: {
+                    title: "Dæmi: Kast með teningi",
+                    problem: "Hverjar eru líkurnar á að fá 6 þegar venjulegum, sex hliða teningi er kastað?",
+                    solution: "Heildarfjöldi mögulegra útkoma er 6 (tölurnar 1, 2, 3, 4, 5, 6). Það er aðeins ein hagstæð útkoma (að fá 6). Því eru líkurnar: P(fá 6) = 1/6."
+                },
+                questions: [
+                    { q: "Hverjar eru líkurnar á að draga hjarta úr venjulegum 52 spila stokki?", o: ["1/4", "1/13", "1/52", "1/2"], a: "1/4" },
+                    { q: "Peningi er kastað. Hverjar eru líkurnar á að fá 'krónu'?", o: ["0", "1/2", "1", "1/4"], a: "1/2" },
+                    { q: "Teningi er kastað. Hverjar eru líkurnar á að fá tölu sem er lægri en 3?", o: ["1/6", "2/6", "3/6", "4/6"], a: "2/6" },
+                    { q: "Í poka eru 3 rauðar kúlur og 5 bláar. Hverjar eru líkurnar á að draga rauða kúlu?", o: ["3/5", "5/8", "3/8", "1/3"], a: "3/8" },
+                    { q: "Hverjar eru líkurnar á að fá slétta tölu þegar teningi er kastað?", o: ["1/6", "1/3", "1/2", "2/3"], a: "1/2" },
+                    { q: "Spunahjól hefur 10 jafna geira, númeraða 1-10. Hverjar eru líkurnar á að lenda á prímtölu (2, 3, 5, 7)?", o: ["2/10", "3/10", "4/10", "5/10"], a: "4/10" },
+                    { q: "Úr spilastokki er eitt spil dregið. Hverjar eru líkurnar á að draga mannspil (Gosa, Drottningu, Kóng)?", o: ["3/52", "12/52", "4/52", "16/52"], a: "12/52" },
+                    { q: "Tveimur teningum er kastað. Hverjar eru líkurnar á að summa þeirra sé 2?", o: ["1/6", "1/12", "1/18", "1/36"], a: "1/36" },
+                    { q: "Líkurnar á að atburður gerist eru 0. Hvað þýðir það?", o: ["Atburðurinn er viss", "Atburðurinn er ómögulegur", "Atburðurinn er líklegur", "Atburðurinn er ólíklegur"], a: "Atburðurinn er ómögulegur" },
+                    { q: "Í happdrætti eru 100 miðar og einn vinningur. Pétur kaupir einn miða. Hverjar eru líkur hans á að vinna?", o: ["1/99", "1/100", "99/100", "100/1"], a: "1/100" }
+                ]
+            },
+            2: {
+                title: "Samsettir atburðir (reglan um samlagningu)",
+                explanation: "Reglan um samlagningu er notuð til að finna líkur á að annar hvor tveggja atburða gerist. Ef atburðir A og B eru sundurlægir (geta ekki gerst samtímis), þá er P(A eða B) = P(A) + P(B). Ef þeir eru ekki sundurlægir, þá er P(A eða B) = P(A) + P(B) - P(A og B).",
+                example: {
+                    title: "Dæmi: Kóngur eða hjarta",
+                    problem: "Hverjar eru líkurnar á að draga kóng eða hjarta úr spilastokki?",
+                    solution: "P(Kóngur) = 4/52. P(Hjarta) = 13/52. Eitt spil er bæði kóngur og hjarta (Hjartakóngur), svo P(Kóngur og Hjarta) = 1/52. Líkur eru því: P(Kóngur eða Hjarta) = 4/52 + 13/52 - 1/52 = 16/52."
+                },
+                questions: [
+                    { q: "Teningi er kastað. Hverjar eru líkurnar á að fá 1 eða 6?", o: ["1/6", "2/6", "1/36", "0"], a: "2/6" },
+                    { q: "Spil er dregið úr stokki. Hverjar eru líkurnar á að draga spaða eða mannspil?", o: ["13/52 + 12/52", "13/52 + 12/52 - 3/52", "13/52 * 12/52", "1/52"], a: "13/52 + 12/52 - 3/52" },
+                    { q: "Í bekk eru 10 strákar og 15 stelpur. Valinn er einn nemandi. Hverjar eru líkurnar á að velja strák eða stelpu?", o: ["10/25", "15/25", "1", "10/15"], a: "1" },
+                    { q: "Teningi er kastað. Hverjar eru líkurnar á að fá slétta tölu eða tölu hærri en 4?", o: ["3/6 + 2/6", "3/6 + 2/6 - 1/6", "5/6", "1/6"], a: "3/6 + 2/6 - 1/6" },
+                    { q: "Úr spilastokki er dregið spil. Hverjar eru líkurnar á að fá ás eða drottningu?", o: ["8/52", "4/52", "2/52", "1/52"], a: "8/52" },
+                    { q: "Í poka eru 5 rauðar, 3 grænar og 2 bláar kúlur. Hverjar eru líkurnar á að draga rauða eða græna kúlu?", o: ["5/10", "3/10", "8/10", "7/10"], a: "8/10" },
+                    { q: "Hverjar eru líkurnar á að draga rautt spil eða ás úr spilastokki?", o: ["26/52 + 4/52", "30/52", "26/52 + 4/52 - 2/52", "26/52"], a: "26/52 + 4/52 - 2/52" },
+                    { q: "Spunahjól er með tölurnar 1-8. Hverjar eru líkurnar á að lenda á prímtölu (2,3,5,7) eða sléttri tölu (2,4,6,8)?", o: ["4/8 + 4/8", "4/8 + 4/8 - 1/8", "1", "4/8"], a: "4/8 + 4/8 - 1/8" },
+                    { q: "Tveimur teningum er kastað. Hverjar eru líkurnar á að summa þeirra sé 7 eða 11?", o: ["6/36 + 2/36", "6/36", "6/36 * 2/36", "7/36"], a: "6/36 + 2/36" },
+                    { q: "Úr hópi 20 manns, þar af 12 sem tala ensku og 8 sem tala þýsku, er einn valinn. Enginn talar bæði tungumálin. Hverjar eru líkur á að velja einhvern sem talar ensku eða þýsku?", o: ["12/20", "8/20", "1", "12/20 * 8/20"], a: "1" }
+                ]
+            },
+            3: {
+                title: "Óháðir og háðir atburðir",
+                explanation: "Atburðir eru óháðir ef útkoma eins hefur ekki áhrif á útkomu hins. Þá gildir margföldunarreglan: P(A og B) = P(A) * P(B). Ef útkoma eins hefur áhrif á hinn, eru þeir háðir. Þá er P(A og B) = P(A) * P(B|A), þar sem P(B|A) eru líkurnar á B að gefnu A.",
+                example: {
+                    title: "Dæmi: Tvö teningaköst (óháðir)",
+                    problem: "Hverjar eru líkurnar á að fá sexunni tvisvar í röð með teningi?",
+                    solution: "Köstin eru óháð. P(fá 6) = 1/6. Líkur á að fá tvær sexur í röð eru: P(6 og 6) = P(6) * P(6) = 1/6 * 1/6 = 1/36."
+                },
+                questions: [
+                    { q: "Peningi er kastað tvisvar. Hverjar eru líkurnar á að fá krónu í bæði skiptin?", o: ["1/2", "1/4", "1", "1/8"], a: "1/4" },
+                    { q: "Úr spilastokki er dregið spil, því skilað og annað dregið. Hverjar eru líkurnar á að draga tvo ása?", o: ["4/52 * 4/52", "4/52 * 3/51", "8/52", "4/52"], a: "4/52 * 4/52" },
+                    { q: "Úr spilastokki eru dregin tvö spil án þess að skila því fyrra. Hverjar eru líkurnar á að draga tvo ása?", o: ["4/52 * 4/52", "4/52 * 3/51", "4/52 + 3/51", "8/103"], a: "4/52 * 3/51" },
+                    { q: "Í poka eru 3 rauðar og 2 bláar kúlur. Tvær kúlur eru dregnar með skilum. Hverjar eru líkurnar á að báðar séu rauðar?", o: ["3/5 * 3/5", "3/5 * 2/4", "6/25", "9/20"], a: "3/5 * 3/5" },
+                    { q: "Í poka eru 3 rauðar og 2 bláar kúlur. Tvær kúlur eru dregnar án skila. Hverjar eru líkurnar á að báðar séu rauðar?", o: ["3/5 * 3/5", "3/5 * 2/4", "9/25", "2/5"], a: "3/5 * 2/4" },
+                    { q: "Líkurnar á að það rigni á morgun eru 40%. Líkurnar á að þú sofir yfir þig eru 10%. G.r.f. að þetta séu óháðir atburðir, hverjar eru líkurnar á að það rigni OG þú sofir yfir þig?", o: ["50%", "4%", "30%", "100%"], a: "4%" },
+                    { q: "Þú kastar teningi og peningi. Hverjar eru líkurnar á að fá tölu hærri en 4 og 'fisk'?", o: ["2/6 * 1/2", "2/6 + 1/2", "3/8", "1/12"], a: "2/6 * 1/2" },
+                    { q: "Í kassa eru 10 perur, þar af 2 bilaðar. Þú tekur tvær perur án skila. Hverjar eru líkurnar á að báðar séu bilaðar?", o: ["2/10 * 2/10", "2/10 * 1/9", "4/100", "2/90"], a: "2/10 * 1/9" },
+                    { q: "Hverjar eru líkurnar á að draga hjarta og síðan spaða úr spilastokki (með skilum)?", o: ["13/52 * 13/52", "13/52 * 12/51", "26/52", "1/16"], a: "13/52 * 13/52" },
+                    { q: "Líkurnar á að lið A vinni leik eru 0.6. Líkurnar á að lið B vinni sinn leik eru 0.8. Hverjar eru líkurnar á að bæði lið vinni?", o: ["1.4", "0.2", "0.48", "0.7"], a: "0.48" }
+                ]
+            },
+            4: {
+                title: "Umraðanir og samantektir",
+                explanation: "Umraðanir (Permutations) eru notaðar þegar röð skiptir máli (hversu margar raðir?). Samantektir (Combinations) eru notaðar þegar röð skiptir ekki máli (hversu margir hópar?). Þessar aðferðir hjálpa okkur að finna heildarfjölda mögulegra útkoma.",
+                example: {
+                    title: "Dæmi: Verðlaunasæti",
+                    problem: "Í 8 manna hlaupi, á hversu marga vegu er hægt að raða í 1., 2. og 3. sæti?",
+                    solution: "Hér skiptir röðin máli, svo við notum umröðun. Fjöldi leiða er P(8,3) = 8! / (8-3)! = 8 * 7 * 6 = 336."
+                },
+                questions: [
+                    { q: "Á hve marga vegu er hægt að raða 4 bókum í hillu?", o: ["4", "12", "16", "24"], a: "24" },
+                    { q: "Úr 10 manna hópi á að velja 3 manna nefnd. Á hve marga vegu er hægt að gera það?", o: ["10 * 9 * 8", "120", "720", "30"], a: "120" },
+                    { q: "Hvað er notað þegar röðin á valinu skiptir EKKI máli?", o: ["Umröðun", "Samantekt", "Margföldunarreglan", "Líkur"], a: "Samantekt" },
+                    { q: "Lykilorð er 4 stafir langt og samanstendur af bókstöfunum A, B, C, D, þar sem hver stafur er aðeins notaður einu sinni. Hvað eru margir möguleikar?", o: ["256", "24", "16", "10"], a: "24" },
+                    { q: "Í veitingahúsi er hægt að velja um 3 forrétti, 5 aðalrétti og 2 eftirrétti. Hve margar mismunandi þriggja rétta máltiðir er hægt að setja saman?", o: ["10", "15", "30", "40"], a: "30" },
+                    { q: "Úr 5 manna vinahópi á að velja 2 til að fara í bíó. Á hve marga vegu er hægt að velja þá?", o: ["10", "20", "25", "5"], a: "10" },
+                    { q: "Á hve marga vegu geta 5 manns staðið í röð?", o: ["5", "25", "60", "120"], a: "120" },
+                    { q: "Hver er munurinn á umröðun og samantekt?", o: ["Enginn munur", "Röð skiptir máli í umröðun", "Röð skiptir máli í samantekt", "Samantekt er alltaf stærri tala"], a: "Röð skiptir máli í umröðun" },
+                    { q: "Pizzastaður býður upp á 8 mismunandi álegg. Þú vilt velja 3. Hve margar mismunandi pizzur getur þú búið til?", o: ["24", "56", "336", "8*7*6"], a: "56" },
+                    { q: "Þú ert með 6 treyjur og 4 buxur. Hve mörg mismunandi dress getur þú sett saman?", o: ["10", "12", "24", "6"], a: "24" }
+                ]
+            }
+        };
+
+        let currentChapter = 1;
+
+        function showChapter(chapterNumber) {
+            currentChapter = chapterNumber;
+            const chapterData = quizData[chapterNumber];
+            const mainContent = document.getElementById('main-content');
+
+            // Update active button
+            document.querySelectorAll('.chapter-btn').forEach(btn => btn.classList.remove('active', 'bg-blue-800', 'text-white'));
+            document.querySelectorAll('.chapter-btn').forEach(btn => {
+                if(btn.id !== `btn-chapter-${chapterNumber}`) {
+                   btn.classList.add('bg-white', 'text-slate-800');
+                }
+            });
+
+            const activeBtn = document.getElementById(`btn-chapter-${chapterNumber}`);
+            activeBtn.classList.add('active');
+            activeBtn.classList.remove('bg-white', 'text-slate-800');
+
+
+            // Build HTML for the chapter
+            let questionsHtml = chapterData.questions.map((q, index) => `
+                <div id="q-${index}" class="question-container bg-white p-5 rounded-lg shadow-sm border border-slate-200">
+                    <p class="font-semibold text-lg mb-4">${index + 1}. ${q.q}</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        ${q.o.map(option => `
+                            <label class="flex items-center p-3 rounded-md border border-slate-300 hover:bg-blue-50 cursor-pointer transition-colors duration-200">
+                                <input type="radio" name="q${index}" value="${option}" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                                <span class="ml-3 text-slate-700">${option}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            mainContent.innerHTML = `
+                <div id="chapter-content" class="space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                        <h2 class="text-3xl font-bold text-blue-700 mb-4">${chapterData.title}</h2>
+                        <p class="text-slate-600 mb-6">${chapterData.explanation}</p>
+                        
+                        <div class="bg-slate-50 p-4 rounded-md border-l-4 border-blue-500">
+                            <h3 class="font-semibold text-lg text-slate-800">${chapterData.example.title}</h3>
+                            <p class="italic text-slate-600 my-2">"${chapterData.example.problem}"</p>
+                            <p class="text-slate-700"><strong class="font-medium">Lausn:</strong> ${chapterData.example.solution}</p>
+                        </div>
+                    </div>
+
+                    <div id="quiz-form" class="space-y-6">
+                        <h3 class="text-2xl font-bold text-center text-slate-700 mb-4">Æfingarverkefni</h3>
+                        ${questionsHtml}
+                    </div>
+
+                    <div id="results-container" class="hidden text-center p-6 bg-white rounded-lg shadow-md"></div>
+                    
+                    <div class="text-center py-6">
+                        <button onclick="checkAnswers()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform transform hover:scale-105 shadow-lg">
+                            Yfirfara svör
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkAnswers() {
+            const chapterData = quizData[currentChapter];
+            let score = 0;
+            const totalQuestions = chapterData.questions.length;
+
+            chapterData.questions.forEach((q, index) => {
+                const form = document.getElementById('quiz-form');
+                const selected = form.querySelector(`input[name="q${index}"]:checked`);
+                const questionContainer = document.getElementById(`q-${index}`);
+                
+                // Reset styles
+                questionContainer.style.borderColor = '#e2e8f0'; // slate-200
+                questionContainer.style.borderWidth = '1px';
+                questionContainer.querySelectorAll('label').forEach(label => {
+                    label.classList.remove('bg-red-100', 'border-red-400', 'bg-green-100', 'border-green-400');
+                });
+
+
+                if (selected) {
+                    const selectedLabel = selected.parentElement;
+                    if (selected.value === q.a) {
+                        score++;
+                        selectedLabel.classList.add('bg-green-100', 'border-green-400');
+                    } else {
+                        selectedLabel.classList.add('bg-red-100', 'border-red-400');
+                        // Highlight correct answer
+                        const correctRadio = Array.from(form.querySelectorAll(`input[name="q${index}"]`)).find(radio => radio.value === q.a);
+                        if (correctRadio) {
+                            correctRadio.parentElement.classList.add('bg-green-100', 'border-green-400');
+                        }
+                    }
+                } else {
+                     questionContainer.style.borderColor = '#f87171'; // red-400
+                     questionContainer.style.borderWidth = '2px';
+                }
+            });
+
+            const resultsContainer = document.getElementById('results-container');
+            const percentage = (score / totalQuestions) * 100;
+            let feedback = '';
+            if (percentage < 50) {
+                feedback = 'Þetta þarf að skoða betur. Lestu yfir dæmin aftur.';
+            } else if (percentage < 80) {
+                feedback = 'Góð tilraun! Þú ert á réttri leið.';
+            } else {
+                feedback = 'Frábær árangur! Þú hefur náð góðum tökum á þessu.';
+            }
+            
+            resultsContainer.innerHTML = `
+                <h2 class="text-2xl font-bold mb-2">Niðurstöður</h2>
+                <p class="text-4xl font-bold ${percentage < 50 ? 'text-red-500' : 'text-green-600'}">${score} / ${totalQuestions}</p>
+                <p class="text-lg mt-2 text-slate-600">${feedback}</p>
+            `;
+            resultsContainer.classList.remove('hidden');
+            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Load the first chapter initially
+        window.onload = () => {
+            showChapter(1);
+        };
+    </script>
+
+</body>
+</html>
+
