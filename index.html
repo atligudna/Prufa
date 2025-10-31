@@ -1,425 +1,184 @@
 <!DOCTYPE html>
 <html lang="is">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Öryggisbil - Kennsluefni</title>
-    <!-- Hleður inn Tailwind CSS fyrir nútímalegt útlit -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Stillingar fyrir Tailwind: Notum Inter leturgerðina -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
-    <style>
-        /* Smá auka stíll fyrir læsileika */
-        body {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-    </style>
-    
-    <!-- 
-      LAGFÆRING 1: Bætum við stillingum fyrir MathJax ÁÐUR en skriftan er hlaðin.
-      Þetta segir MathJax að nota $...$ fyrir stærðfræði og 
-      lætur okkur vita þegar það er tilbúið.
-    -->
-    <script>
-      MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          displayMath: [['$$', '$$'], ['\\[', '\\]']]
-        },
-        startup: {
-          ready: () => {
-            console.log('MathJax er tilbúið og hefur þýtt upphafssíðuna.');
-            // Þetta tryggir að dæmið í textanum (sem er ekki í JS) birtist rétt.
-            MathJax.startup.defaultPageReady();
-          }
-        }
-      };
-    </script>
-    <!-- Ath: MathJax er bætt við til að birta stærðfræðiformúlur rétt eins og í LaTeX -->
-    <!-- Við hleðum því inn hér í head -->
-    <script type="text/javascript" id="MathJax-script" async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Öryggisbil – Kennsluefni</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } }
+    }
+  </script>
+
+  <style>
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  </style>
+
+  <!-- MathJax stillingar -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <!-- Mikilvægt: ekki async/defer -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
+
 <body class="bg-gray-100 font-sans">
 
-    <!-- Allt HTML efnið er óbreytt -->
-    <div class="container mx-auto max-w-3xl bg-white shadow-xl rounded-lg my-8 sm:my-12">
-        <div class="p-6 sm:p-10">
-            
-            <!-- Haus -->
-            <h1 class="text-3xl sm:text-4xl font-bold text-center mb-8 text-indigo-700">
-                Skiljum Öryggisbil
-            </h1>
+  <div class="container mx-auto max-w-3xl bg-white shadow-xl rounded-lg my-8 sm:my-12">
+    <div class="p-6 sm:p-10">
+      
+      <h1 class="text-3xl sm:text-4xl font-bold text-center mb-8 text-indigo-700">
+        Skiljum Öryggisbil
+      </h1>
 
-            <!-- 1. Skýringartexti -->
-            <section id="explanation" class="mb-8">
-                <h2 class="text-2xl font-semibold mb-4 pb-2 border-b border-gray-300 text-gray-800">
-                    Hvað er öryggisbil?
-                </h2>
-                <div class="prose prose-lg max-w-none text-gray-700 space-y-4">
-                    <p>
-                        Öryggisbil er svið gilda, fengið út frá tölfræði úrtaks, sem er líklegt til að innihalda raunverulegt gildi ákveðinnar þýðisbreytu (eins og meðaltals eða hlutfalls). Það er oftast gefið upp sem prósentustig, til dæmis 95% öryggisbil.
-                    </p>
-                    <p>
-                        Þessi prósenta þýðir að ef við myndum endurtaka tilraunina mörgum sinnum og reikna öryggisbil fyrir hvert úrtak, þá myndu 95% þessara bila innihalda hið sanna gildi þýðisbreytunnar. Öryggisbilið mælir því óvissuna sem fylgir úrtakinu. Breiðara bil þýðir meiri óvissu en mjórra bil þýðir meiri nákvæmni.
-                    </p>
-                </div>
-            </section>
-
-            <!-- 2. Sýnidæmi -->
-            <section id="example" class="mb-8">
-                <h2 class="text-2xl font-semibold mb-4 pb-2 border-b border-gray-300 text-gray-800">
-                    Sýnidæmi: 95% Öryggisbil fyrir Meðaltal
-                </h2>
-                <div class="prose prose-lg max-w-none text-gray-700 space-y-4 bg-gray-50 p-6 rounded-lg">
-                    <p>
-                        Segjum að við viljum finna 95% öryggisbil fyrir meðalhæð allra framhaldsskólanema. Við tökum 100 nemenda ($n=100$) tilviljunarúrtak.
-                    </p>
-                    <ul class="list-disc pl-5">
-                        <li>Meðalhæð í úrtakinu er $\bar{x} = 175$ cm.</li>
-                        <li>Staðalfrávik úrtaksins er $s = 10$ cm.</li>
-                    </ul>
-                    <p>
-                        Formúlan fyrir öryggisbil (fyrir stórt úrtak) er:
-                        <br>
-                        <strong class="font-mono text-base sm:text-lg block text-center my-2 p-3 bg-white rounded border border-gray-200">
-                            $\bar{x} \pm Z \cdot (\frac{s}{\sqrt{n}})$
-                        </strong>
-                    </p>
-                    <p><strong>Skref 1: Finna Z-gildi</strong><br>
-                        Fyrir 95% öryggisbil er Z-gildið alltaf $\mathbf{1.96}$. (Þetta gildi skilur 2.5% eftir í hvorum hala normaldreifingar).
-                    </p>
-                    <p><strong>Skref 2: Reikna staðalvillu (Standard Error, $SE$)</strong><br>
-                        $SE = \frac{s}{\sqrt{n}} = \frac{10}{\sqrt{100}} = \frac{10}{10} = \mathbf{1}$
-                    </p>
-                    <p><strong>Skref 3: Reikna vikmörk (Margin of Error, $ME$)</strong><br>
-                        $ME = Z \cdot SE = 1.96 \cdot 1 = \mathbf{1.96}$
-                    </p>
-                    <p><strong>Skref 4: Reikna öryggisbilið</strong><br>
-                        Neðra mörk: $\bar{x} - ME = 175 - 1.96 = \mathbf{173.04}$ cm.<br>
-                        Efra mörk: $\bar{x} + ME = 175 + 1.96 = \mathbf{176.96}$ cm.
-                    </p>
-                    <p>
-                        <strong>Niðurstaða:</strong> Við erum 95% viss um að sönn meðalhæð allra framhaldsskólanema sé á bilinu [173.04 cm, 176.96 cm].
-                    </p>
-                </div>
-            </section>
-
-            <!-- 3. Gagnvirkar Spurningar -->
-            <section id="quiz">
-                <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-gray-300 text-gray-800">
-                    Prófaðu þekkingu þína
-                </h2>
-                
-                <!-- Spurningarnar verða settar inn hér með JavaScript -->
-                <form id="quiz-form">
-                    <div id="quiz-container" class="space-y-6">
-                        <!-- Spurning 1 hleðst hér -->
-                        <!-- Spurning 2 hleðst hér -->
-                        <!-- ... -->
-                    </div>
-                </form>
-
-                <!-- Takkar og niðurstöður -->
-                <div class="mt-8 text-center">
-                    <button id="check-answers-btn" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-700 transition duration-300 text-lg shadow-md">
-                        Yfirfara svör
-                    </button>
-                    <button id="retry-btn" class="bg-gray-500 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-600 transition duration-300 text-lg shadow-md ml-4 hidden">
-                        Reina aftur
-                    </button>
-                </div>
-
-                <div id="results" class="mt-8 text-2xl font-bold text-center p-4 rounded-lg">
-                    <!-- Niðurstöður birtast hér -->
-                </div>
-            </section>
-
+      <!-- Kennslutexti -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4 pb-2 border-b border-gray-300 text-gray-800">
+          Hvað er öryggisbil?
+        </h2>
+        <div class="prose prose-lg max-w-none text-gray-700 space-y-4">
+          <p>
+            Öryggisbil er svið gilda sem líklegt er að innihaldi raunverulegt gildi ákveðinnar þýðisbreytu.
+            Það er oftast gefið upp sem 95% öryggisbil.
+          </p>
+          <p>
+            Dæmi: við tökum úrtak $n = 100$ með meðalhæð $\bar{x} = 175$ cm og staðalfrávik $s = 10$ cm.
+            Þá er öryggisbil reiknað með:
+            <br>
+            <strong class="font-mono block text-center my-3 bg-gray-50 p-2 rounded">
+              $\bar{x} \pm Z \cdot \frac{s}{\sqrt{n}}$
+            </strong>
+          </p>
         </div>
-    </div>
+      </section>
 
-    <!-- 
-      LAGFÆRING: Allur JavaScript kóðinn er færður hingað neðst. 
-      Við fjarlægjum 'DOMContentLoaded' því skriftan keyrir hvort eð er
-      eftir að allt HTML-ið fyrir ofan hefur verið hlaðið.
-    -->
-    <script>
-        // Spurningagrunnurinn
-        const questions = [
-            {
-                question: "Hvað mælir öryggisbil fyrst og fremst?",
-                options: [
-                    "Stærð úrtaksins",
-                    "Óvissuna í mati okkar á þýðisbreytu",
-                    "Nákvæmlega gildi þýðisbreytunnar",
-                    "Fjölda mælinga í þýðinu"
-                ],
-                answer: 1 // Réttháa svarið er á index 1
-            },
-            {
-                question: "Hvað þýðir 95% öryggisbil?",
-                options: [
-                    "Að 95% af gögnunum í úrtakinu séu á bilinu",
-                    "Að 95% líkur séu á að meðaltal úrtaksins sé rétt",
-                    "Að ef við endurtökum tilraunina oft, myndu 95% bilanna innihalda sanna gildið",
-                    "Að það séu 5% líkur á villu í útreikningum"
-                ],
-                answer: 2
-            },
-            {
-                question: "Hvaða áhrif hefur það á breidd öryggisbils ef við stækkum úrtakið (n) en höldum öllu öðru óbreyttu?",
-                options: [
-                    "Bilið verður breiðara (meiri óvissa)",
-                    "Bilið verður mjórra (meiri nákvæmni)",
-                    "Breiddin breytist ekki",
-                    "Það fer eftir staðalfráviki"
-                ],
-                answer: 1
-            },
-            {
-                question: "Hvaða áhrif hefur það á breidd öryggisbils ef við hækkum öryggisstigið (t.d. úr 90% í 99%)?",
-                options: [
-                    "Bilið verður breiðara",
-                    "Bilið verður mjórra",
-                    "Breiddin breytist ekki",
-                    "Það er ómögulegt að segja"
-                ],
-                answer: 0
-            },
-            {
-                question: "Hvert er algengasta Z-gildið sem notað er til að reikna 95% öryggisbil?",
-                options: [
-                    "1.00",
-                    "1.65",
-                    "1.96",
-                    "2.58"
-                ],
-                answer: 2
-            },
-            {
-                question: "Hvað kallast stærðin $Z \\cdot (\\frac{s}{\\sqrt{n}})$ í formúlunni?",
-                options: [
-                    "Staðalvilla (Standard Error)",
-                    "Vikmörk (Margin of Error)",
-                    "Meðaltal",
-                    "Staðalfrávik"
-                ],
-                answer: 1
-            },
-            {
-                question: "Gefið er: $n=100$, $\\bar{x}=50$, $s=5$. Hver er staðalvillan ($SE = \\frac{s}{\\sqrt{n}}$)?",
-                options: [
-                    "0.05",
-                    "0.5",
-                    "5.0",
-                    "50.0"
-                ],
-                answer: 1
-            },
-            {
-                question: "Með sömu gögnum ($n=100$, $\\bar{x}=50$, $s=5$), hver eru vikmörkin ($ME$) fyrir 95% öryggisbil? (Notaðu Z=1.96)",
-                options: [
-                    "0.98 (því 1.96 * 0.5)",
-                    "9.8 (því 1.96 * 5)",
-                    "1.96 (því 1.96 * 1)",
-                    "0.196 (því 1.96 / 10)"
-                ],
-                answer: 0
-            },
-            {
-                question: "Hvert er þá 95% öryggisbilið fyrir gögnin úr síðustu tveimur spurningum? ($\\bar{x}=50$, $ME=0.98$)",
-                options: [
-                    "[48.04, 51.96]",
-                    "[49.02, 50.98]",
-                    "[40.2, 59.8]",
-                    "[50, 50.98]"
-                ],
-                answer: 1
-            },
-            {
-                question: "Ef 95% öryggisbil fyrir hlutfall kjósenda sem styðja flokk X er [0.52, 0.58], hver er rétta túlkunin?",
-                options: [
-                    "Nákvæmlega 55% styðja flokkinn",
-                    "Flokkurinn mun fá á bilinu 52% til 58% atkvæða í kosningunum",
-                    "Við erum 95% viss um að raunverulegt hlutfall allra kjósenda sem styðja flokkinn sé á bilinu 52% til 58%",
-                    "Það eru 95% líkur að meðaltal úrtaksins sé á bilinu 52% til 58%"
-                ],
-                answer: 2
-            }
-        ];
-
-        const quizContainer = document.getElementById('quiz-container');
-        const checkBtn = document.getElementById('check-answers-btn');
-        const retryBtn = document.getElementById('retry-btn');
-        const resultsContainer = document.getElementById('results');
-        const quizForm = document.getElementById('quiz-form');
-
-        // Keyrum föllin strax (engin þörf á DOMContentLoaded)
-        buildQuiz();
-        checkBtn.addEventListener('click', checkAnswers);
-        retryBtn.addEventListener('click', retryQuiz);
+      <!-- Gagnvirkt próf -->
+      <section id="quiz">
+        <h2 class="text-2xl font-semibold mb-6 pb-2 border-b border-gray-300 text-gray-800">
+          Prófaðu þekkingu þína
+        </h2>
         
+        <form id="quiz-form">
+          <div id="quiz-container" class="space-y-6"></div>
+        </form>
 
-        // Býr til spurningarnar í HTML
-        function buildQuiz() {
-            quizContainer.innerHTML = ''; // Hreinsum ef það er eitthvað fyrir
-            questions.forEach((q, index) => {
-                // Búum til 'div' fyrir hverja spurningu
-                const questionDiv = document.createElement('div');
-                questionDiv.id = `q-div-${index}`;
-                questionDiv.className = 'p-5 border border-gray-200 rounded-lg transition-all duration-300';
+        <div class="mt-8 text-center">
+          <button id="check-answers-btn"
+            class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-700 transition text-lg shadow-md">
+            Yfirfara svör
+          </button>
+          <button id="retry-btn"
+            class="bg-gray-500 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-600 transition text-lg shadow-md ml-4 hidden">
+            Reyna aftur
+          </button>
+        </div>
 
-                // Búum til texta spurningarinnar
-                const questionText = document.createElement('p');
-                questionText.className = 'text-lg font-semibold mb-4 text-gray-900';
-                questionText.innerHTML = `${index + 1}. ${q.question}`; 
-                questionDiv.appendChild(questionText);
+        <div id="results" class="mt-8 text-2xl font-bold text-center p-4 rounded-lg"></div>
+      </section>
 
-                // Búum til svarmöguleikana
-                const optionsDiv = document.createElement('div');
-                optionsDiv.className = 'space-y-2';
+    </div>
+  </div>
 
-                q.options.forEach((option, optIndex) => {
-                    const label = document.createElement('label');
-                    label.className = 'block p-3 rounded-md border border-gray-200 hover:bg-gray-100 cursor-pointer has-[:checked]:bg-indigo-50 has-[:checked]:border-indigo-300';
+  <!-- JavaScript (MathJax virkar því það er hlaðið á undan) -->
+  <script>
+    const questions = [
+      {
+        question: "Hvað þýðir 95% öryggisbil?",
+        options: [
+          "Að 95% líkur séu á að meðaltal úrtaksins sé rétt",
+          "Að 95% af gögnunum séu á bilinu",
+          "Að ef við endurtökum tilraunina oft, myndu 95% bilanna innihalda sanna gildið",
+          "Að það séu 5% líkur á villu í útreikningum"
+        ],
+        answer: 2
+      },
+      {
+        question: "Formúlan fyrir öryggisbil er $\\bar{x} \\pm Z \\cdot (\\frac{s}{\\sqrt{n}})$. Hvað táknar stærðin $Z \\cdot (\\frac{s}{\\sqrt{n}})$?",
+        options: [
+          "Staðalvilla (Standard Error)",
+          "Vikmörk (Margin of Error)",
+          "Meðaltal",
+          "Staðalfrávik"
+        ],
+        answer: 1
+      },
+      {
+        question: "Gefið er $n = 100$, $s = 10$. Hver er staðalvillan $SE = \\frac{s}{\\sqrt{n}}$?",
+        options: ["1", "10", "0.1", "100"],
+        answer: 0
+      }
+    ];
 
-                    const input = document.createElement('input');
-                    input.type = 'radio';
-                    input.name = `question-${index}`;
-                    input.value = optIndex;
-                    input.className = 'mr-3 align-middle';
+    const quizContainer = document.getElementById('quiz-container');
+    const checkBtn = document.getElementById('check-answers-btn');
+    const retryBtn = document.getElementById('retry-btn');
+    const results = document.getElementById('results');
+    const quizForm = document.getElementById('quiz-form');
 
-                    const span = document.createElement('span');
-                    span.textContent = option;
-                    span.className = 'text-gray-800 align-middle';
+    // --- Byggir spurningarnar og rendrar MathJax ---
+    function buildQuiz() {
+      quizContainer.innerHTML = '';
+      questions.forEach((q, i) => {
+        const div = document.createElement('div');
+        div.className = 'p-5 border border-gray-200 rounded-lg';
+        div.innerHTML = `
+          <p class="text-lg font-semibold mb-4">${i + 1}. ${q.question}</p>
+          ${q.options.map((opt, j) => `
+            <label class="block p-3 rounded-md border hover:bg-gray-100 cursor-pointer">
+              <input type="radio" name="q${i}" value="${j}" class="mr-2">
+              ${opt}
+            </label>
+          `).join('')}
+        `;
+        quizContainer.appendChild(div);
+      });
 
-                    label.appendChild(input);
-                    label.appendChild(span);
-                    optionsDiv.appendChild(label);
-                });
+      // 👉 MathJax rendrar allar formúlur í spurningunum
+      MathJax.typesetPromise([quizContainer]);
+    }
 
-                questionDiv.appendChild(optionsDiv);
-                quizContainer.appendChild(questionDiv);
-            });
-            
-            // LYKILATRIÐIÐ:
-            // Við biðjum MathJax að þýða formúlurnar.
-            // En við þurfum að bíða eftir að MathJax sé tilbúið.
-            // 'MathJax.startup.promise' bíður eftir að skriftan hlaðist inn.
-            // .then() keyrir um leið og hún er tilbúin.
-            
-            // LAGFÆRING 2: Við látum MathJax endur-þýða BARA quiz-gáminn (container)
-            // eftir að við erum búnir að búa spurningarnar til.
-            if (window.MathJax && window.MathJax.startup) {
-                window.MathJax.startup.promise.then(() => {
-                    console.log("MathJax tilbúið, endurþýði spurningarnar...");
-                    // Við segjum MathJax að þýða BARA svæðið með spurningunum
-                    MathJax.typesetPromise([quizContainer]);
-                }).catch((err) => console.error("Villa við MathJax þýðingu:", err));
-            } else {
-                console.error("MathJax fannst ekki þegar reynt var að þýða spurningar.");
-            }
-        }
+    // --- Athugar svör ---
+    function checkAnswers() {
+      let score = 0;
+      questions.forEach((q, i) => {
+        const sel = quizForm.querySelector(`input[name="q${i}"]:checked`);
+        if (sel && parseInt(sel.value) === q.answer) score++;
+      });
+      const ratio = score / questions.length;
+      results.textContent = `Þú fékkst ${score} af ${questions.length} rétt.`;
+      results.className =
+        'mt-8 text-2xl font-bold text-center p-4 rounded-lg ' +
+        (ratio >= 0.8 ? 'bg-green-100 text-green-800'
+          : ratio >= 0.5 ? 'bg-yellow-100 text-yellow-800'
+          : 'bg-red-100 text-red-800');
 
-        // Fer yfir svörin
-        function checkAnswers() {
-            let score = 0;
-            
-            questions.forEach((q, index) => {
-                const selected = document.querySelector(`input[name="question-${index}"]:checked`);
-                const qDiv = document.getElementById(`q-div-${index}`);
-                
-                // Hreinsum gamla stíla
-                qDiv.classList.remove('border-green-400', 'bg-green-50', 'border-red-400', 'bg-red-50');
-                
-                // Finnum rétta svarið til að auðkenna
-                const allLabels = qDiv.querySelectorAll('label');
-                const correctLabel = allLabels[q.answer];
-                correctLabel.classList.remove('font-bold', 'text-green-700'); // hreinsa ef 'reyna aftur'
+      checkBtn.classList.add('hidden');
+      retryBtn.classList.remove('hidden');
+    }
 
-                if (selected) {
-                    const userAnswer = parseInt(selected.value);
-                    if (userAnswer === q.answer) {
-                        score++;
-                        qDiv.classList.add('border-green-400', 'bg-green-50');
-                    } else {
-                        qDiv.classList.add('border-red-400', 'bg-red-50');
-                        // Auðkennum rétta svarið ef vitlaust var valið
-                        correctLabel.classList.add('font-bold', 'text-green-700');
-                    }
-                } else {
-                    // Ekki svarað
-                    qDiv.classList.add('border-red-400', 'bg-red-50');
-                    correctLabel.classList.add('font-bold', 'text-green-700');
-                }
+    // --- Endurstillir prófið ---
+    function retryQuiz() {
+      quizForm.reset();
+      results.textContent = '';
+      checkBtn.classList.remove('hidden');
+      retryBtn.classList.add('hidden');
+      buildQuiz();
+    }
 
-                // Gerum radio takka óvirka
-                qDiv.querySelectorAll('input').forEach(input => input.disabled = true);
-            });
+    checkBtn.addEventListener('click', checkAnswers);
+    retryBtn.addEventListener('click', retryQuiz);
 
-            // Sýnum niðurstöður
-            resultsContainer.textContent = `Þú fékkst ${score} af ${questions.length} rétt.`;
-            if (score / questions.length >= 0.8) {
-                resultsContainer.className = 'mt-8 text-2xl font-bold text-center p-4 rounded-lg bg-green-100 text-green-800';
-            } else if (score / questions.length >= 0.5) {
-                resultsContainer.className = 'mt-8 text-2xl font-bold text-center p-4 rounded-lg bg-yellow-100 text-yellow-800';
-            } else {
-                resultsContainer.className = 'mt-8 text-2xl font-bold text-center p-4 rounded-lg bg-red-100 text-red-800';
-            }
-
-            // Sýna 'Reina aftur' takkann og fela 'Yfirfara'
-            checkBtn.classList.add('hidden');
-            retryBtn.classList.remove('hidden');
-
-            // Skrolla að niðurstöðum
-            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        // Endurstillir könnunina
-        function retryQuiz() {
-            // Hreinsum formið (afvelur alla radio takka)
-            quizForm.reset();
-
-            // Hreinsum niðurstöðutexta
-            resultsContainer.textContent = '';
-            resultsContainer.className = 'mt-8 text-2xl font-bold text-center p-4 rounded-lg';
-
-            // Endurstillum stíla á öllum spurningum
-            questions.forEach((q, index) => {
-                const qDiv = document.getElementById(`q-div-${index}`);
-                qDiv.classList.remove('border-green-400', 'bg-green-50', 'border-red-400', 'bg-red-50');
-                
-                const allLabels = qDiv.querySelectorAll('label');
-                allLabels.forEach(label => label.classList.remove('font-bold', 'text-green-700'));
-                
-                // Virkjum radio takka aftur
-                qDiv.querySelectorAll('input').forEach(input => input.disabled = false);
-            });
-
-            // Sýna 'Yfirfara' takkann og fela 'Reina aftur'
-            checkBtn.classList.remove('hidden');
-            retryBtn.classList.add('hidden');
-
-            // Skrolla efst á könnunina
-            document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
-        }
-
-    </script>
-
+    // --- Keyrum upphaf ---
+    buildQuiz();
+  </script>
 </body>
 </html>
-
-
-
